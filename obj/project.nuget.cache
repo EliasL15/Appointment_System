@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "jixmASaXTOY71tRAs6/c801x97wVNT/BRKLe1Xk4JEt4VddNnyezCn2TRbPr2/awTFIstLzntF2+vb87NabAkw==",
+  "dgSpecHash": "q/Ok77quYEYYK4t/ULTMLQfFhIL+sXONz/j47vy1Q5L1t+YPHiiodHi15YEpS5hieXGAvqT+dHsm1Wr4wsTdiA==",
   "success": true,
-  "projectFilePath": "/Users/elias/apointment_management_system/AppointmentManagementSystem/AppointmentManagementSystem.csproj",
+  "projectFilePath": "/Users/elias/apointment_management_system/Appointment_System/AppointmentManagementSystem.csproj",
   "expectedPackageFiles": [
     "/Users/elias/.nuget/packages/azure.core/1.25.0/azure.core.1.25.0.nupkg.sha512",
     "/Users/elias/.nuget/packages/azure.identity/1.7.0/azure.identity.1.7.0.nupkg.sha512",

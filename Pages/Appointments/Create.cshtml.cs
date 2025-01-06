@@ -1,25 +1,44 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
-using AppointmentManagementSystem;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authorization;
 using System.Threading.Tasks;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace AppointmentManagementSystem.Pages.Appointments
 {
+    [Authorize(Roles = "Customer,Admin")]
     public class CreateModel : PageModel
     {
         private readonly AppDbContext _context;
+        private readonly UserManager<IdentityUser> _userManager;
 
         [BindProperty]
         public Appointment Appointment { get; set; } = new Appointment();
 
-        public CreateModel(AppDbContext context)
+        public List<object> UnavailableTimes { get; set; }
+
+        public CreateModel(AppDbContext context, UserManager<IdentityUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
 
-        public IActionResult OnGet()
+        public async Task<IActionResult> OnGetAsync()
         {
+            UnavailableTimes = await _context.Appointments
+                .Select(a => new
+                {
+                    start = a.StartTime,
+                    end = a.EndTime,
+                    rendering = "background",
+                    backgroundColor = "red",
+                    borderColor = "red"
+                })
+                .ToListAsync<object>();
+
             return Page();
         }
 
@@ -41,10 +60,27 @@ namespace AppointmentManagementSystem.Pages.Appointments
                 return Page();
             }
 
+            var userName = _userManager.GetUserName(User);
+            if (userName == null)
+            {
+                ModelState.AddModelError(string.Empty, "Unable to determine the user.");
+                return Page();
+            }
+            Appointment.CreatedBy = userName;
+            Appointment.EndTime = Appointment.StartTime.AddMinutes(30); // Ensure 30-minute duration
             _context.Appointments.Add(Appointment);
             await _context.SaveChangesAsync();
 
-            return RedirectToPage("./Index");
+            if (User.IsInRole("Admin"))
+            {
+                return RedirectToPage("/Appointments/Index");
+            }
+            else if (User.IsInRole("Customer"))
+            {
+                return RedirectToPage("/Appointments/MyBookings");
+            }
+
+            return RedirectToPage("/Appointments/Index");
         }
     }
 }

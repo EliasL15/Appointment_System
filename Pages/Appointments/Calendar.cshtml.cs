@@ -4,9 +4,11 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 
 namespace AppointmentManagementSystem.Pages.Appointments
 {
+    [Authorize(Roles = "Admin")]
     public class CalendarModel : PageModel
     {
         private readonly AppDbContext _context;

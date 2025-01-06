@@ -1,3 +1,4 @@
+using System;
 using System.ComponentModel.DataAnnotations;
 
 public class Appointment
@@ -17,4 +18,6 @@ public class Appointment
     public string Location { get; set; } = string.Empty;
 
     public string Description { get; set; } = string.Empty;
+
+    public string CreatedBy { get; set; } = string.Empty;
 }

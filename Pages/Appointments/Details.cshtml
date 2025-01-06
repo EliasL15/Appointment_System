@@ -30,6 +30,9 @@
 
                         <dt class="col-sm-3">Description</dt>
                         <dd class="col-sm-9">@Html.DisplayFor(model => model.Appointment.Description)</dd>
+
+                        <dt class="col-sm-3">Created By</dt>
+                        <dd class="col-sm-9">@Html.DisplayFor(model => model.Appointment.CreatedBy)</dd>
                     </dl>
                     <div class="text-center">
                         <a asp-page="./Edit" asp-route-id="@Model.Appointment.Id" class="btn btn-primary">Edit</a>

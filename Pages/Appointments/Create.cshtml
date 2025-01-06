@@ -5,71 +5,41 @@
     ViewData["Title"] = "Create Appointment";
 }
 
-<h1 class="text-center my-4">Create Appointment</h1>
+<h1 class="text-center my-5">Create Appointment</h1>
 
-<div class="container">
+<div class="container mb-5">
     <div class="row justify-content-center">
         <div class="col-md-8">
-            <div class="card shadow-sm">
-                <div class="card-header bg-primary text-white">
+            <div class="card shadow-lg">
+                <div class="card-header bg-primary text-white py-3">
                     <h4 class="mb-0">Appointment Details</h4>
                 </div>
-                <div class="card-body">
+                <div class="card-body p-4">
                     <form method="post">
-                        <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
-                        <div class="form-group">
-                            <label asp-for="Appointment.Title" class="control-label"></label>
-                            <div class="input-group">
-                                <div class="input-group-prepend">
-                                    <span class="input-group-text"><i class="fas fa-heading"></i></span>
-                                </div>
-                                <input asp-for="Appointment.Title" class="form-control" />
-                            </div>
+                        <div asp-validation-summary="ModelOnly" class="text-danger mb-4"></div>
+                        <div class="form-group mb-4">
+                            <label asp-for="Appointment.Title" class="control-label mb-2"></label>
+                            <input asp-for="Appointment.Title" class="form-control" />
                             <span asp-validation-for="Appointment.Title" class="text-danger"></span>
                         </div>
-                        <div class="form-group">
-                            <label asp-for="Appointment.StartTime" class="control-label"></label>
-                            <div class="input-group">
-                                <div class="input-group-prepend">
-                                    <span class="input-group-text"><i class="fas fa-clock"></i></span>
-                                </div>
-                                <input asp-for="Appointment.StartTime" class="form-control" />
-                            </div>
-                            <span asp-validation-for="Appointment.StartTime" class="text-danger"></span>
+                        <div class="form-group mb-4">
+                            <div id='calendar' class="shadow-sm p-3 bg-white rounded"></div>
+                            <input type="hidden" asp-for="Appointment.StartTime" id="startTime" />
+                            <input type="hidden" asp-for="Appointment.EndTime" id="endTime" />
                         </div>
-                        <div class="form-group">
-                            <label asp-for="Appointment.EndTime" class="control-label"></label>
-                            <div class="input-group">
-                                <div class="input-group-prepend">
-                                    <span class="input-group-text"><i class="fas fa-clock"></i></span>
-                                </div>
-                                <input asp-for="Appointment.EndTime" class="form-control" />
-                            </div>
-                            <span asp-validation-for="Appointment.EndTime" class="text-danger"></span>
-                        </div>
-                        <div class="form-group">
-                            <label asp-for="Appointment.Location" class="control-label"></label>
-                            <div class="input-group">
-                                <div class="input-group-prepend">
-                                    <span class="input-group-text"><i class="fas fa-map-marker-alt"></i></span>
-                                </div>
-                                <input asp-for="Appointment.Location" class="form-control" />
-                            </div>
+                        <div class="form-group mb-4">
+                            <label asp-for="Appointment.Location" class="control-label mb-2"></label>
+                            <input asp-for="Appointment.Location" class="form-control" />
                             <span asp-validation-for="Appointment.Location" class="text-danger"></span>
                         </div>
-                        <div class="form-group">
-                            <label asp-for="Appointment.Description" class="control-label"></label>
-                            <div class="input-group">
-                                <div class="input-group-prepend">
-                                    <span class="input-group-text"><i class="fas fa-align-left"></i></span>
-                                </div>
-                                <textarea asp-for="Appointment.Description" class="form-control"></textarea>
-                            </div>
+                        <div class="form-group mb-4">
+                            <label asp-for="Appointment.Description" class="control-label mb-2"></label>
+                            <textarea asp-for="Appointment.Description" class="form-control"></textarea>
                             <span asp-validation-for="Appointment.Description" class="text-danger"></span>
                         </div>
-                        <div class="form-group text-center">
-                            <input type="submit" value="Create" class="btn btn-primary" />
-                            <a asp-page="Index" class="btn btn-secondary ml-2">Back to List</a>
+                        <div class="form-group text-center mt-5">
+                            <input type="submit" value="Create" class="btn btn-primary px-4 py-2 me-2" />
+                            <a asp-page="@(User.IsInRole("Admin") ? "/Appointments/Index" : "/Appointments/MyBookings")" class="btn btn-secondary px-4 py-2">Back</a>
                         </div>
                     </form>
                 </div>
@@ -78,6 +48,49 @@
     </div>
 </div>
 
-@section Styles {
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet" />
+
+@section Scripts {
+    <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.15/index.global.min.js'></script>
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        var calendarEl = document.getElementById('calendar');
+        var calendar = new FullCalendar.Calendar(calendarEl, {
+          initialView: 'timeGridWeek',
+          slotDuration: '00:30:00',
+          slotMinTime: '09:00:00',
+          slotMaxTime: '18:00:00',
+          selectable: true,
+          selectMirror: true,
+          selectOverlap: false,
+          unselectAuto: false, 
+          validRange: {
+            start: new Date()
+          },
+          selectConstraint: 'businessHours',
+          businessHours: {
+            daysOfWeek: [ 1, 2, 3, 4, 5 ],
+            startTime: '09:00',
+            endTime: '18:00',
+          },
+          select: function(info) {
+            // Calculate duration in milliseconds
+            var duration = info.end.getTime() - info.start.getTime();
+            // Convert to minutes
+            var minutes = duration / (1000 * 60);
+            
+            if (minutes !== 30) {
+              calendar.unselect();
+              return;
+            }
+
+            document.getElementById('startTime').value = info.startStr;
+            document.getElementById('endTime').value = info.endStr;
+          },
+          events: @Html.Raw(Json.Serialize(Model.UnavailableTimes)),
+          eventColor: '#red',
+          eventDisplay: 'background'
+        });
+        calendar.render();
+      });
+    </script>
 }

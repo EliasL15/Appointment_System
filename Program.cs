@@ -17,7 +17,9 @@ builder.Services.AddDefaultIdentity<IdentityUser>(options => {
     options.Password.RequireUppercase = true;
     options.Password.RequiredLength = 6;
     options.Password.RequiredUniqueChars = 1;
-}).AddEntityFrameworkStores<AppDbContext>();
+})
+.AddRoles<IdentityRole>() // Add Role Management
+.AddEntityFrameworkStores<AppDbContext>();
 
 builder.Services.ConfigureApplicationCookie(options =>
 {
@@ -45,5 +47,16 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapRazorPages();
+
+// Seed roles and admin user
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+    var seeder = new DataSeeder(
+        services.GetRequiredService<RoleManager<IdentityRole>>(),
+        services.GetRequiredService<UserManager<IdentityUser>>()
+    );
+    await seeder.SeedRolesAndAdminAsync();
+}
 
 app.Run();

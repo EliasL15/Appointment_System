@@ -8116,11 +8116,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/Users/elias/apointment_management_system/AppointmentManagementSystem/AppointmentManagementSystem.csproj",
+      "projectUniqueName": "/Users/elias/apointment_management_system/Appointment_System/AppointmentManagementSystem.csproj",
       "projectName": "AppointmentManagementSystem",
-      "projectPath": "/Users/elias/apointment_management_system/AppointmentManagementSystem/AppointmentManagementSystem.csproj",
+      "projectPath": "/Users/elias/apointment_management_system/Appointment_System/AppointmentManagementSystem.csproj",
       "packagesPath": "/Users/elias/.nuget/packages/",
-      "outputPath": "/Users/elias/apointment_management_system/AppointmentManagementSystem/obj/",
+      "outputPath": "/Users/elias/apointment_management_system/Appointment_System/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "/Users/elias/.nuget/NuGet/NuGet.Config"
