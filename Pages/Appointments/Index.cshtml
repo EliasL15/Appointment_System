@@ -1,0 +1,62 @@
+@page
+@model AppointmentManagementSystem.Pages.Appointments.IndexModel
+
+@{
+    ViewData["Title"] = "Appointments";
+}
+
+<h1 class="text-center my-4">Appointments</h1>
+
+<div class="container">
+    <div class="row mb-3">
+        <div class="col-md-12 text-right">
+            <a asp-page="Create" class="btn btn-primary">
+                + Create New Appointment
+            </a>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card shadow-sm">
+                <div class="card-header bg-light text-dark">
+                    <h4 class="mb-0">Appointment List</h4>
+                </div>
+                <div class="card-body">
+                    <table class="table table-striped table-hover">
+                        <thead class="thead-light">
+                            <tr>
+                                <th>@Html.DisplayNameFor(model => model.Appointment[0].Title)</th>
+                                <th>@Html.DisplayNameFor(model => model.Appointment[0].StartTime)</th>
+                                <th>@Html.DisplayNameFor(model => model.Appointment[0].EndTime)</th>
+                                <th>@Html.DisplayNameFor(model => model.Appointment[0].Location)</th>
+                                <th>@Html.DisplayNameFor(model => model.Appointment[0].Description)</th>
+                                <th class="text-end">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model.Appointment)
+                            {
+                                <tr>
+                                    <td>@Html.DisplayFor(modelItem => item.Title)</td>
+                                    <td>@item.StartTime.ToString("yyyy-MM-dd HH:mm")</td>
+                                    <td>@item.EndTime.ToString("yyyy-MM-dd HH:mm")</td>
+                                    <td>@Html.DisplayFor(modelItem => item.Location)</td>
+                                    <td>@Html.DisplayFor(modelItem => item.Description)</td>
+                                    <td class="text-end">
+                                        <a asp-page="./Edit" asp-route-id="@item.Id" class="btn btn-sm btn-primary">Edit</a>
+                                        <a asp-page="./Details" asp-route-id="@item.Id" class="btn btn-sm btn-primary">Details</a>
+                                        <a asp-page="./Delete" asp-route-id="@item.Id" class="btn btn-sm btn-danger">Delete</a>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Styles {
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet" />
+}
