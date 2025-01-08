@@ -24,9 +24,6 @@ An Appointment System designed to streamline scheduling, improve efficiency, and
   - View available time slots and book appointments.
   - Reschedule or cancel existing appointments.
 
-- **Real-Time Notifications**:
-  - Notifications for upcoming appointments and important updates.
-
 - **Responsive Design**:
   - Optimized for use on desktop, tablet, and mobile devices.
 
