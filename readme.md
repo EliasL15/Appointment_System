@@ -29,9 +29,9 @@ An Appointment System designed to streamline scheduling, improve efficiency, and
 
 ## Technologies Used
 
-- **Backend**: Python, Flask/Django (depending on your project setup)
-- **Frontend**: HTML, CSS, JavaScript
-- **Database**: SQLite/MySQL/PostgreSQL (specify your database)
+- **Frontend**: HTML, CSS, Razor Pages (ASP.NET Core)
+- **Backend**: C#, ASP.NET Core
+- **Database**: SQL Server
 - **Version Control**: Git and GitHub
 
 ## Usage
